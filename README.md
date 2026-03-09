@@ -23,15 +23,21 @@ Rollie helps economic development organizations track companies, jobs, and hirin
 
 ## Setup
 
-### Claude Cowork
+### Claude Code / Cowork
 
-1. Go to **Browse plugins** → **Personal** → **+** → **"Add marketplace by URL"**
-2. Paste the marketplace URL from your [Rollie profile](https://app.rolliejobs.com) under **AI Integrations**
-3. Click **Sync**
+1. Install the plugin: `/plugin install rollie-jobs@rollie`
+2. Run `/setup` — Rollie will walk you through connecting your account
+3. That's it! Ask Rollie anything about your workforce data.
 
-### Claude Code
+Or add the marketplace manually:
 
-Add to `.mcp.json` in your project root (or `~/.claude/.mcp.json` for global access):
+```
+/plugin marketplace add https://github.com/south-bend-code-works/rollie.git
+```
+
+### Cursor / Windsurf / Other MCP Clients
+
+Add to your tool's MCP settings:
 
 ```json
 {
@@ -46,16 +52,14 @@ Add to `.mcp.json` in your project root (or `~/.claude/.mcp.json` for global acc
 }
 ```
 
-### Cursor / Windsurf / Other MCP Clients
-
-Most MCP-compatible tools use the same config format above. Add it to your tool's MCP settings.
-
 ## Getting Your API Key
 
 1. Log in to [Rollie](https://app.rolliejobs.com)
 2. Go to **My Profile** → **AI Integrations**
 3. Click **New Connection** and give it a label
 4. Copy the key — you'll only see it once
+
+Or just run `/setup` after installing the plugin — it'll guide you through the whole thing.
 
 ## Available Tools
 

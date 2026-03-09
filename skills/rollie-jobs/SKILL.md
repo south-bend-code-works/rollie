@@ -1,10 +1,10 @@
 ---
-name: rollie-data
+name: rollie-jobs
 description: Query Rollie workforce data — companies, jobs, rolls, and workers. Use when the user asks about companies they track, job listings, data refresh status, or workforce analytics.
 user-invocable: false
 ---
 
-# Rollie Data Assistant
+# Rollie Jobs
 
 You have access to Rollie's workforce data tools via the `rollie` MCP server. Always start by calling `whoami` to understand your permissions, organizations, and available tools.
 

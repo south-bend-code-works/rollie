@@ -10,22 +10,13 @@
   },
   "plugins": [
     {
-      "name": "rollie-data",
+      "name": "rollie-jobs",
+      "source": "./",
       "description": "Search jobs, look up companies, check data refresh history, and query workforce data from your Rollie account.",
       "version": "1.0.0",
       "author": {
         "name": "Rollie"
-      },
-      "mcpServers": {
-        "rollie": {
-          "type": "sse",
-          "url": "https://rollie-db-mcp-4qqvujfleq-uc.a.run.app/sse",
-          "headers": {
-            "Authorization": "Bearer ${ROLLIE_API_KEY}"
-          }
-        }
-      },
-      "strict": false
+      }
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "name": "rollie-jobs",
+  "version": "1.0.0",
+  "description": "Search jobs, look up companies, check data refresh history, and query workforce data from your Rollie account.",
+  "author": {
+    "name": "Rollie",
+    "email": "info@rolliejobs.com"
+  },
+  "homepage": "https://www.rolliejobs.com",
+  "repository": "https://github.com/south-bend-code-works/rollie",
+  "license": "MIT",
+  "keywords": ["workforce", "jobs", "economic-development", "rollie"]
+}
