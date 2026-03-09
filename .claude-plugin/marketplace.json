@@ -1,0 +1,31 @@
+{
+  "name": "rollie",
+  "owner": {
+    "name": "Rollie",
+    "email": "info@rolliejobs.com"
+  },
+  "metadata": {
+    "description": "Connect Claude to your Rollie workforce data — search jobs, look up companies, check roll history, and more.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "rollie-data",
+      "description": "Search jobs, look up companies, check data refresh history, and query workforce data from your Rollie account.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Rollie"
+      },
+      "mcpServers": {
+        "rollie": {
+          "type": "sse",
+          "url": "https://rollie-db-mcp.run.app/sse",
+          "headers": {
+            "Authorization": "Bearer ${ROLLIE_API_KEY}"
+          }
+        }
+      },
+      "strict": false
+    }
+  ]
+}
