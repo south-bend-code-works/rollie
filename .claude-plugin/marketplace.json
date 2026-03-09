@@ -19,7 +19,7 @@
       "mcpServers": {
         "rollie": {
           "type": "sse",
-          "url": "https://rollie-db-mcp.run.app/sse",
+          "url": "https://rollie-db-mcp-4qqvujfleq-uc.a.run.app/sse",
           "headers": {
             "Authorization": "Bearer ${ROLLIE_API_KEY}"
           }

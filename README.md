@@ -37,7 +37,7 @@ Add to `.mcp.json` in your project root (or `~/.claude/.mcp.json` for global acc
 {
   "mcpServers": {
     "rollie": {
-      "url": "https://rollie-db-mcp.run.app/sse",
+      "url": "https://rollie-db-mcp-4qqvujfleq-uc.a.run.app/sse",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }
