@@ -41,7 +41,7 @@ Help the user connect to Rollie by setting up their API key.
    {
      "mcpServers": {
        "rollie": {
-         "url": "https://rollie-db-mcp-4qqvujfleq-uc.a.run.app/sse",
+         "url": "https://mcp.rolliejobs.com/sse",
          "headers": {
            "Authorization": "Bearer rlk_PASTE_YOUR_KEY_HERE"
          }

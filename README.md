@@ -43,7 +43,7 @@ Add to your tool's MCP settings:
 {
   "mcpServers": {
     "rollie": {
-      "url": "https://rollie-db-mcp-4qqvujfleq-uc.a.run.app/sse",
+      "url": "https://mcp.rolliejobs.com/sse",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }
