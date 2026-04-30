@@ -1,10 +1,7 @@
 {
   "mcpServers": {
-    "rollie": {
-      "url": "https://mcp.rolliejobs.com/sse",
-      "headers": {
-        "Authorization": "Bearer ${ROLLIE_API_KEY}"
-      }
+    "rollie-db": {
+      "url": "https://mcp.rolliejobs.com/sse"
     }
   }
 }
