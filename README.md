@@ -5,92 +5,125 @@
 <h1 align="center">Rollie</h1>
 
 <p align="center">
-  Your friendly roly-poly workforce assistant, ready to roll up and help you explore your regional workforce data.
+  A Claude Code plugin for organizations that walk alongside job seekers — query workforce data, analyze regional hiring, and import the people you serve.
 </p>
 
 ---
 
-Rollie helps economic development organizations track companies, jobs, and hiring activity across their region. This plugin brings all that data right into your AI tools — just ask Rollie what you want to know.
+Rollie is a CRM and workforce intelligence platform for organizations that help people find jobs. That includes veteran placement programs, high school counselors helping students find work or internships, colleges placing graduates, chambers of commerce, economic development organizations (EDOs), and workforce agencies — any organization that acts as a trusted guide in someone's job search journey.
 
-**"How many jobs does Best Buy have?" "Find me warehouse jobs in Indiana." "When was our data last refreshed?"** — Rollie's got you covered.
+This plugin connects Claude to your Rollie data so you can ask questions, run analysis, write content, and manage job seekers directly from your AI tools.
 
-## What Rollie Can Do
+## What You Can Do
 
-- **Search jobs** across all your organizations using plain English
-- **Look up companies** — profiles, job counts, job board membership, refresh status
-- **Explore your workforce** — trends, hiring activity, regional insights
-- **Check data health** — when things last refreshed, what's running, what failed
+- **Query jobs and companies** — search by role, location, industry, or plain English
+- **Analyze regional hiring trends** — spot role concentrations, skills gaps, employer growth
+- **Write workforce content** — articles, reports, and insights grounded in real local data
+- **Manage job seekers** — look up, add, update, and match clients to open positions
+- **Import seekers** — bring in people from spreadsheets, CSVs, or CRM exports with the `/import-seekers` skill
 
-## Setup
+## Install
 
-### Claude Code / Cowork
-
-1. Install the plugin: `/plugin install rollie-jobs@rollie`
-2. Run `/setup` — Rollie will walk you through connecting your account
-3. That's it! Ask Rollie anything about your workforce data.
-
-Or add the marketplace manually:
+In Claude Code, run once:
 
 ```
-/plugin marketplace add https://github.com/south-bend-code-works/rollie.git
+/plugin marketplace add south-bend-code-works/rollie
 ```
 
-### Cursor / Windsurf / Other MCP Clients
+Claude Code will prompt you to install the plugin. On first use, you'll be asked to log in to your Rollie account via OAuth — no API key needed.
 
-Add to your tool's MCP settings:
+## Skills
+
+### `rollie-jobs` (auto-invoked)
+Claude automatically uses this skill whenever you ask about workforce data — companies, job listings, hiring trends, or regional labor market questions. You don't need to type a command; just ask naturally.
+
+**Examples:**
+- *"What manufacturing jobs do we have in Kosciusko County?"*
+- *"Find companies with more than 10 open positions"*
+- *"Write a summary of what our region is hiring for right now"*
+- *"How many CNC machinist openings are there across all our employers?"*
+
+### `/import-seekers` (user-invoked)
+A guided workflow for importing job seekers from an external source. Walks you through profiling the file, mapping columns to Rollie fields, creating any needed custom fields, and importing records one by one with dedup handling.
+
+**Works with:** spreadsheets, CSVs, Salesforce exports, HubSpot exports, or any tabular data.
+
+**Type `/import-seekers` to start.**
+
+## Available Tools (21 total)
+
+### Identity
+| Tool | What it does |
+|------|-------------|
+| `whoami` | Shows your identity, authorized organizations, permission level, and available tools. Always called first. |
+
+### Companies
+| Tool | What it does |
+|------|-------------|
+| `get_companies` | List all companies tracked by your org |
+| `get_company` | Profile a single employer — size, industry, job count, data freshness |
+| `search_companies` | Find companies by industry, type, or characteristic |
+| `add_company_to_org` | Add employers to your tracked list. New companies enter a crawl queue — **jobs appear within 24 hours** as Rollie indexes their openings. |
+| `remove_company_from_org` | Remove employers from your tracked list |
+
+### Jobs
+| Tool | What it does |
+|------|-------------|
+| `get_jobs` | Pull structured job listings from a specific employer |
+| `search_jobs` | Semantic search across all jobs — natural language, finds by concept not just keyword |
+
+### Job Classifiers
+| Tool | What it does |
+|------|-------------|
+| `get_classifiers` | List AI classification lenses defined for your org (e.g., entry-level, CDL required) |
+| `get_classifier` | Get a single classifier and its definition |
+| `create_classifier` | Define a new AI lens — Rollie runs it against all jobs in your org |
+
+### Job Seekers
+| Tool | What it does |
+|------|-------------|
+| `get_seeker` | Look up a single job seeker by ID |
+| `filter_seekers` | Find seekers by status, group, name, email, city, or state |
+| `search_seekers` | Semantic search across seeker profiles and resumes |
+| `upsert_seeker` | Create or update a seeker — handles dedup automatically |
+| `find_seeker_duplicates` | Audit for likely duplicate seeker records |
+| `delete_seeker` | Permanently delete a seeker record |
+
+### Seeker Custom Fields
+| Tool | What it does |
+|------|-------------|
+| `get_seeker_field_definitions` | List custom fields defined for your org |
+| `upsert_seeker_field_definition` | Create or update a custom field |
+| `delete_seeker_field_definition` | Soft-delete a custom field |
+
+### Org Configuration
+| Tool | What it does |
+|------|-------------|
+| `get_org_members` | List staff members and their user IDs |
+| `get_seeker_statuses` | List available seeker statuses |
+| `get_seeker_groups` | List available seeker groups |
+
+## MCP Only (No Claude Code)
+
+For Cursor, Windsurf, or other MCP clients, add to your MCP settings:
 
 ```json
 {
   "mcpServers": {
-    "rollie": {
-      "url": "https://mcp.rolliejobs.com/sse",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
+    "rollie-db": {
+      "url": "https://mcp.rolliejobs.com/sse"
     }
   }
 }
 ```
 
-## Getting Your API Key
-
-1. Log in to [Rollie](https://app.rolliejobs.com)
-2. Go to **My Profile** → **AI Integrations**
-3. Click **New Connection** and give it a label
-4. Copy the key — you'll only see it once
-
-Or just run `/setup` after installing the plugin — it'll guide you through the whole thing.
-
-## Available Tools
-
-| Tool | What Rollie Does | Who Can Use It |
-|------|-----------------|----------------|
-| `whoami` | Introduces himself and shows your orgs and permissions | Everyone |
-| `get_companies` | Lists all the companies your org tracks | Everyone |
-| `get_company` | Digs into a specific company's profile | Everyone |
-| `get_jobs` | Pulls up jobs for a company | Everyone |
-| `search_jobs` | Searches jobs using natural language | Everyone |
-| `hub_get_company` | Looks up the source-of-truth company record | Rollie Prime |
-| `hub_get_jobs` | Gets jobs from the central hub | Rollie Prime |
-| `hub_search_jobs` | Searches across ALL jobs in the system | Rollie Prime |
-| `get_roll` | Shows details of a data refresh run | Rollie Prime |
-| `get_roll_history` | Shows recent refresh history for a company | Rollie Prime |
-| `get_rolls` | Queries rolls by status, type, or time | Rollie Prime |
-| `get_roll_logs` | Shows step-by-step execution logs | Rollie Prime |
-| `get_workers` | Checks on the worker crew | Rollie Prime |
-
-## How It Works
-
-This plugin connects to Rollie's [MCP](https://modelcontextprotocol.io) server, giving your AI assistant read-only access to your organization's workforce data. Your API key determines which organizations you can access.
-
-- **Regular users** see data scoped to their organizations
-- **Rollie Prime users** get the full toolkit — hub data, roll management, and worker status
+The server uses OAuth 2.1 — your client will prompt you to authenticate on first connection.
 
 ## Learn More
 
-- [Rollie](https://www.rolliejobs.com) — Marketing site
-- [Rollie App](https://app.rolliejobs.com) — Log in and manage your data
-- [MCP (Model Context Protocol)](https://modelcontextprotocol.io) — The open standard that makes this work
+- [rolliejobs.com](https://www.rolliejobs.com) — Product site
+- [app.rolliejobs.com](https://app.rolliejobs.com) — Log in and manage your data
+- [Model Context Protocol](https://modelcontextprotocol.io) — The open standard powering this integration
 
 ## License
 
