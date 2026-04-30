@@ -1,10 +1,17 @@
 ---
 name: rollie-jobs
-description: Query Rollie workforce data — companies and jobs for an org. Use when the user asks about companies they track, job listings, or job search.
+description: >
+  Query Rollie workforce data — companies, job listings, and job seekers for an org.
+  Rollie is a CRM for organizations that walk alongside people in their job search: veteran placement programs,
+  high school counselors helping students find jobs or internships, colleges placing graduates, workforce
+  development agencies, and similar organizations that act as a trusted guide. Use when the user asks about
+  companies they track, job listings, open positions, or anything related to workforce data.
 user-invocable: false
 ---
 
 # Rollie Jobs
+
+Rollie is a CRM for organizations that walk alongside job seekers — veteran placement programs, high school counselors, colleges, workforce agencies, and others who act as a trusted guide helping clients find the right role.
 
 You have access to Rollie's workforce data tools via the `rollie-db` MCP server. Always start by calling `whoami` to understand your permissions, organizations, and available tools.
 

@@ -1,10 +1,20 @@
 ---
 name: import-seekers
-description: Import job seekers from a spreadsheet or data file into a Rollie org. Handles field mapping, schema creation, owner resolution, and row-by-row upsert with dedup. Use when the user wants to import contacts, veterans, or job seekers from an external source.
+description: >
+  Import job seekers into Rollie — a CRM for organizations that walk alongside people in their job search.
+  Rollie users include veteran placement programs, high school counselors helping students find jobs or internships,
+  colleges placing graduates, workforce development agencies, and any organization that acts as a trusted guide
+  helping clients find the right position. Use this skill when the user wants to import, upload, load, bring in,
+  or add a list of people — whether from a spreadsheet, CSV, CRM export (Salesforce, HubSpot, etc.), or any
+  other file — into their Rollie org so they can begin tracking and supporting those individuals in their job search.
 user-invocable: true
 ---
 
 # Import Seekers
+
+Rollie is a CRM for organizations that walk alongside job seekers — veteran placement programs, high school
+counselors, colleges, workforce agencies, and others who act as a trusted guide helping clients navigate their
+job search and land the right role.
 
 You are importing job seekers from an external data source into a Rollie org. Follow this workflow exactly — do not skip the orient phase and do not write any records until the user approves the mapping.
 
