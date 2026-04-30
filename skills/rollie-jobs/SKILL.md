@@ -55,48 +55,48 @@ If it's not obvious, ask one question: "What are you trying to understand or cre
 ### Companies
 | Tool | What it does |
 |------|-------------|
-| `get_companies` | List all companies tracked by the org. Supports pagination and field filtering. Use to survey the employer landscape or build a count by industry. |
-| `get_company` | Get a single company by domain ID — size, industry, job count, data freshness (`jobs_refreshed_at`). |
-| `search_companies` | Semantic search across companies by industry, type, or characteristic. |
-| `add_company_to_org` | Add one or more companies to the org's tracked list. Accepts a list of domains or `"*"` to add all hub companies. **Adding a company places it in Rollie's crawl queue — it can take up to 24 hours for jobs to appear**, as Rollie needs to discover and index that employer's openings. Adding an already-tracked company is a no-op. |
-| `remove_company_from_org` | Remove one or more companies from the org's tracked list. Accepts a list of domains or `"*"` to remove all. Does not delete historical data. |
+| `get_companies(org_id, after, limit, fields)` | List all companies tracked by the org. Supports pagination and field filtering. Use to survey the employer landscape or build a count by industry. |
+| `get_company(org_id, company_id, fields)` | Get a single company by domain ID — size, industry, job count, data freshness (`jobs_refreshed_at`). |
+| `search_companies(org_id, query, limit, fields)` | Semantic search across companies using neural embeddings — finds by concept, not just keyword. |
+| `add_company_to_org(org_id, company_ids)` | Add one or more companies to the org's tracked list. Accepts a list of domains or `"*"` to add all hub companies. **Adding a company places it in Rollie Jobs' crawl queue — it can take up to 24 hours for jobs to appear**, as Rollie needs to discover and index that employer's openings. Adding an already-tracked company is a no-op. |
+| `remove_company_from_org(org_id, company_ids)` | Remove one or more companies from the org's tracked list. Accepts a list of domains or `"*"` to remove all. Does not delete historical data. |
 
 ### Jobs
 | Tool | What it does |
 |------|-------------|
-| `get_jobs` | Get structured job listings from a specific company. Use `fields="job_title,job_locations,job_link"` for summaries; `fields="all"` when you need descriptions for deeper analysis. |
-| `search_jobs` | Semantic search across all jobs in the org using natural language. Finds by concept — "nurse jobs" finds "RN", "Registered Nurse", "Staff Nurse". Best tool for pattern-finding and discovery across the full dataset. |
+| `get_jobs(org_id, company_id, after, limit, fields)` | Get structured job listings from a specific company. Use `fields="job_title,job_locations,job_link"` for summaries; `fields="all"` when you need descriptions for deeper analysis. |
+| `search_jobs(org_id, query, company_id, limit, fields)` | Semantic search across all jobs using neural embeddings — finds by concept. "Nurse jobs" finds "RN", "Registered Nurse", "Staff Nurse". Best tool for pattern-finding and discovery across the full dataset. |
 
 ### Job Classifiers (AI Lenses)
 | Tool | What it does |
 |------|-------------|
-| `get_classifiers` | List all AI classification lenses defined for the org (e.g., "entry-level", "CDL required", "remote-eligible"). |
-| `get_classifier` | Get a single classifier by ID, including its definition and current status. |
-| `create_classifier` | Define a new AI classification lens. Rollie will run it against all jobs in the org. Use to answer questions like "how many jobs require a CDL?" or "which openings are truly entry-level?" |
+| `get_classifiers(org_id)` | List all AI classification lenses defined for the org (e.g., "entry-level", "CDL required", "remote-eligible"). |
+| `get_classifier(org_id, field_id)` | Get a single classifier by ID, including its definition and current status. |
+| `create_classifier(org_id, field_slug, field_type, classification_prompt, field_name, enum_values)` | Define a new AI classification lens. Rollie Jobs will run it against all jobs in the org. Use to answer questions like "how many jobs require a CDL?" or "which openings are truly entry-level?" |
 
 ### Job Seekers
 | Tool | What it does |
 |------|-------------|
-| `get_seeker` | Get a single job seeker by ID. Returns contact info, status, group, and any custom fields. Use `fields="*"` for all fields. |
-| `filter_seekers` | Structured lookup of seekers by status, group, name prefix, email, city, or state. Returns a compact list by default. |
-| `search_seekers` | Semantic search across seekers using natural language — searches resume content and profile. Good for "find seekers with logistics experience" or "who has a CDL?". |
-| `upsert_seeker` | Create or update a seeker record. Handles dedup automatically: matches on external ID → email → phone. Returns whether the record was created, updated, or flagged as a probable duplicate. |
-| `find_seeker_duplicates` | Audit the org's seekers for likely duplicates (shared email or phone across different records). Returns candidate pairs for review — no writes. |
-| `delete_seeker` | Permanently delete a seeker record. |
+| `get_seeker(org_id, seeker_id, fields)` | Get a single job seeker by ID. Returns contact info, status, group, and any custom fields. Use `fields="*"` for all fields. |
+| `filter_seekers(org_id, status, group_id, name, email, city, state)` | Structured lookup of seekers by status, group, name prefix, email, city, or state. Returns a compact list by default. |
+| `search_seekers(org_id, query, filters, fields)` | Semantic search across seekers using neural embeddings — searches resume content and profile. Good for "find seekers with logistics experience" or "who has a CDL?". |
+| `upsert_seeker(org_id, seeker_data, merge_id, confirmed_new)` | Create or update a seeker record. Handles dedup automatically: matches on external ID → email → phone. Returns whether the record was created, updated, or flagged as a probable duplicate. |
+| `find_seeker_duplicates(org_id)` | Audit the org's seekers for likely duplicates (shared email or phone across different records). Returns candidate pairs for review — no writes. |
+| `delete_seeker(org_id, seeker_id)` | Permanently delete a seeker record. |
 
 ### Seeker Custom Fields
 | Tool | What it does |
 |------|-------------|
-| `get_seeker_field_definitions` | List all custom field definitions for the org (e.g., branch of service, discharge status, education level). Shows field key, type, and allowed values. |
-| `upsert_seeker_field_definition` | Create or update a custom field definition. Field key is auto-computed as `sf_{orgId}_{slug}`. |
-| `delete_seeker_field_definition` | Soft-delete a custom field (sets status to disabled). Preserves existing data on seeker records. |
+| `get_seeker_field_definitions(org_id)` | List all custom field definitions for the org (e.g., branch of service, discharge status, education level). Shows field key, type, and allowed values. |
+| `upsert_seeker_field_definition(org_id, field_data)` | Create or update a custom field definition. Field key is auto-computed as `sf_{orgId}_{slug}`. |
+| `delete_seeker_field_definition(org_id, field_slug)` | Soft-delete a custom field (sets status to disabled). Preserves existing data on seeker records. |
 
 ### Org Configuration
 | Tool | What it does |
 |------|-------------|
-| `get_org_members` | List all staff members in the org with their user IDs. Use this to resolve a person's name to a user ID when assigning ownership of a seeker. |
-| `get_seeker_statuses` | List all seeker statuses defined for the org (e.g., Lead, Active, Placed). Always call this before assigning a status — never hardcode. |
-| `get_seeker_groups` | List all seeker groups defined for the org. Call before assigning a group to a seeker. |
+| `get_org_members(org_id)` | List all staff members in the org with their user IDs. Use this to resolve a person's name to a user ID when assigning ownership of a seeker. |
+| `get_seeker_statuses(org_id)` | List all seeker statuses defined for the org (e.g., Lead, Active, Placed). Always call this before assigning a status — never hardcode. |
+| `get_seeker_groups(org_id)` | List all seeker groups defined for the org. Call before assigning a group to a seeker. |
 
 ---
 
