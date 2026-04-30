@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Rollie" width="80" />
 </p>
 
-<h1 align="center">Rollie</h1>
+<h1 align="center">Rollie Jobs</h1>
 
 <p align="center">
   Real-time, hyper-local workforce intelligence — brought into your AI tools.
@@ -22,7 +22,7 @@ The two core lenses:
 
 ## What This Plugin Does
 
-This plugin connects Claude directly to your Rollie data via the [Model Context Protocol](https://modelcontextprotocol.io). You can query, analyze, and act on your workforce data in plain English — no dashboards, no exports, no manual lookups.
+This plugin connects Claude directly to your Rollie Jobs data via the [Model Context Protocol](https://modelcontextprotocol.io). You can query, analyze, and act on your workforce data in plain English — no dashboards, no exports, no manual lookups.
 
 **Ask questions:** *"What are the most in-demand roles across our tracked employers right now?"*
 
