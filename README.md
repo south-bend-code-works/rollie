@@ -66,7 +66,7 @@ A guided workflow for importing job seekers from a spreadsheet, CSV, or CRM expo
 |------|-------------|
 | `get_companies` | List all employers tracked by your org |
 | `get_company` | Profile a single employer — industry, job count, data freshness |
-| `search_companies` | Find employers by industry, type, or characteristic |
+| `search_companies` | Semantic search across employers using neural embeddings — finds by concept, not just keyword |
 | `add_company_to_org` | Add employers to your tracked list. New companies enter Rollie's crawl queue — **jobs appear within 24 hours** as Rollie indexes their openings. |
 | `remove_company_from_org` | Remove employers from your tracked list |
 
@@ -74,7 +74,7 @@ A guided workflow for importing job seekers from a spreadsheet, CSV, or CRM expo
 | Tool | What it does |
 |------|-------------|
 | `get_jobs` | Pull structured job listings from a specific employer |
-| `search_jobs` | Semantic search across all jobs — finds by concept, not just keyword. "Nurse jobs" finds RN, Registered Nurse, Staff Nurse. |
+| `search_jobs` | Semantic search across all jobs using neural embeddings — finds by concept, not just keyword. "Nurse jobs" finds RN, Registered Nurse, Staff Nurse. |
 
 ### Job Classifiers
 | Tool | What it does |
