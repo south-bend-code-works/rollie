@@ -5,7 +5,7 @@
 <h1 align="center">Rollie Jobs MCP</h1>
 
 <p align="center">
-  Real-time, hyper-local and hyper-industry workforce intelligence — brought into your AI tools.
+  Real-time, hyper-local and hyper-industry workforce intelligence — know what's hiring in your region / industry, brought into your AI tools.
 </p>
 
 ---
