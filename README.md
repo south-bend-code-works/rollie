@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Rollie" width="80" />
 </p>
 
-<h1 align="center">Rollie Jobs</h1>
+<h1 align="center">Rollie Jobs MCP</h1>
 
 <p align="center">
   Real-time, hyper-local and hyper-industry workforce intelligence — brought into your AI tools.
