@@ -59,53 +59,53 @@ A guided workflow for importing job seekers from a spreadsheet, CSV, or CRM expo
 ### Identity
 | Tool | What it does |
 |------|-------------|
-| `whoami` | Returns your identity, authorized organizations, permission level, and the full list of tools available to you. Always called first. |
+| `whoami()` | Returns your identity, authorized organizations, permission level, and the full list of tools available to you. Always called first. |
 
 ### Companies
 | Tool | What it does |
 |------|-------------|
-| `get_companies` | List all employers tracked by your org |
-| `get_company` | Profile a single employer — industry, job count, data freshness |
-| `search_companies` | Semantic search across employers using neural embeddings — finds by concept, not just keyword |
-| `add_company_to_org` | Add employers to your tracked list. New companies enter Rollie's crawl queue — **jobs appear within 24 hours** as Rollie indexes their openings. |
-| `remove_company_from_org` | Remove employers from your tracked list |
+| `get_companies(org_id, after, limit, fields)` | List all employers tracked by your org |
+| `get_company(company_id, org_id, fields)` | Profile a single employer — industry, job count, data freshness |
+| `search_companies(query, org_id, limit, fields)` | Semantic search across employers using neural embeddings — finds by concept, not just keyword. *"Advanced manufacturers"*, *"healthcare employers hiring nurses"*, *"companies with apprenticeship programs"* |
+| `add_company_to_org(org_id, company_ids)` | Add employers to your tracked list. New companies enter Rollie's crawl queue — **jobs appear within 24 hours** as Rollie indexes their openings. |
+| `remove_company_from_org(org_id, company_ids)` | Remove employers from your tracked list |
 
 ### Jobs
 | Tool | What it does |
 |------|-------------|
-| `get_jobs` | Pull structured job listings from a specific employer |
-| `search_jobs` | Semantic search across all jobs using neural embeddings — finds by concept, not just keyword. "Nurse jobs" finds RN, Registered Nurse, Staff Nurse. |
+| `get_jobs(company_id, org_id, after, limit, fields)` | Pull structured job listings from a specific employer |
+| `search_jobs(query, company_id, limit, org_id, fields)` | Semantic search across all jobs using neural embeddings — finds by concept, not just keyword. *"CDL drivers in logistics"*, *"entry-level manufacturing"*, *"software internships"*, *"jobs that don't require a degree"* |
 
 ### Job Classifiers
 | Tool | What it does |
 |------|-------------|
-| `get_classifiers` | List AI classification lenses defined for your org (e.g., entry-level, CDL required, remote-eligible) |
-| `get_classifier` | Get a single classifier definition |
-| `create_classifier` | Define a new AI lens — Rollie runs it against all jobs in your org to answer questions like "how many jobs require a forklift cert?" |
+| `get_classifiers(org_id)` | List AI classification lenses defined for your org (e.g., entry-level, CDL required, remote-eligible) |
+| `get_classifier(field_id, org_id)` | Get a single classifier definition |
+| `create_classifier(field_slug, field_type, classification_prompt, field_name, org_id, enum_values)` | Define a new AI lens — Rollie runs it against all jobs in your org to answer questions like "how many jobs require a forklift cert?" |
 
 ### Job Seekers
 | Tool | What it does |
 |------|-------------|
-| `get_seeker` | Look up a single job seeker by ID |
-| `filter_seekers` | Find seekers by status, group, name, email, city, or state |
-| `search_seekers` | Semantic search across seeker profiles and resumes |
-| `upsert_seeker` | Create or update a seeker — handles dedup automatically |
-| `find_seeker_duplicates` | Audit for likely duplicate seeker records |
-| `delete_seeker` | Permanently delete a seeker record |
+| `get_seeker(seeker_id, org_id, fields)` | Look up a single job seeker by ID |
+| `filter_seekers(org_id, status, group_id, name, email, city, state)` | Find seekers by status, group, name, email, city, or state |
+| `search_seekers(query, org_id, filters, fields)` | Semantic search across seeker profiles and resumes using neural embeddings |
+| `upsert_seeker(seeker_data, org_id, merge_id, confirmed_new)` | Create or update a seeker — handles dedup automatically |
+| `find_seeker_duplicates(org_id)` | Audit for likely duplicate seeker records |
+| `delete_seeker(seeker_id, org_id)` | Permanently delete a seeker record |
 
 ### Seeker Custom Fields
 | Tool | What it does |
 |------|-------------|
-| `get_seeker_field_definitions` | List org-defined custom fields (e.g., branch of service, discharge status, cohort) |
-| `upsert_seeker_field_definition` | Create or update a custom field |
-| `delete_seeker_field_definition` | Soft-delete a custom field |
+| `get_seeker_field_definitions(org_id)` | List org-defined custom fields (e.g., branch of service, discharge status, cohort) |
+| `upsert_seeker_field_definition(field_data, org_id)` | Create or update a custom field |
+| `delete_seeker_field_definition(field_slug, org_id)` | Soft-delete a custom field |
 
 ### Org Configuration
 | Tool | What it does |
 |------|-------------|
-| `get_org_members` | List staff members and their user IDs |
-| `get_seeker_statuses` | List available seeker pipeline statuses |
-| `get_seeker_groups` | List available seeker groups |
+| `get_org_members(org_id)` | List staff members and their user IDs |
+| `get_seeker_statuses(org_id)` | List available seeker pipeline statuses |
+| `get_seeker_groups(org_id)` | List available seeker groups |
 
 ## MCP Only (Cursor, Windsurf, other clients)
 
