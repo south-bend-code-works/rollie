@@ -40,11 +40,11 @@ Produce a mapping table for the user to approve before writing anything:
 | First Name + Last Name | `fullName`, `firstName`, `lastName` | Always combined |
 | Email | `email` | Standard field |
 | Phone | `phone` | Standard field |
-| Address fields | geocoded → `address1`, `city`, `state`, `zip`, `address_geo_coord`, `address_h3_1–8` | Always geocode via Google Maps before storing — raw values are normalized, coordinates and H3 indexes derived |
+| Address fields | `address1`, `address2`, `city`, `state`, `zip` | Pass raw values — `upsert_seeker` handles geocoding, H3 indexing, and seeding `preferredRegions` server-side. Do not geocode or compute H3 yourself. |
 | LinkedIn URL | `linkedInUrl` | Standard field — never create a custom field for this |
 | Education (free text) | `education` | Standard field — never create a custom field for this |
 | Created Date | `sourceCreatedAt` | Preserves original creation date from source system |
-| Preferred region / region to work / job search area | `preferredRegions` + `h3Resolution` | Standard field — any column expressing *where the seeker wants to work* maps here, never to a custom field. `preferredRegions` is an array: collect ALL region values across however many source columns or delimited values exist (e.g. "Central; Northeast" or separate region1/region2 columns), geocode each name as a place query, convert each to an H3 cell at resolution 3, then expand each cell to a k-ring of radius 1 (the cell + its 6 neighbors) to cover the full regional area. Deduplicate, store as a single combined array. Set `h3Resolution: 3`. Max 30 cells — if deduped result exceeds 30, trim to 30. If no region column exists but an address was geocoded, seed `preferredRegions` from the k-ring(1) of `address_h3_3` as a fallback. |
+| Preferred region / region to work / job search area | `_region_names` | If the source has an explicit "where they want to work" column, pass the value(s) as `_region_names` (array of place name strings). The MCP geocodes them to H3 cells and sets `preferredRegions` automatically. If no region column exists, `preferredRegions` is seeded from the geocoded address — do nothing. Never pass `preferredRegions` directly. |
 | Contact Owner / Assigned To | `ownerIds` | Resolve name → userId via `get_org_members`. Pass as array — `upsert_seeker` will auto-build the denormalized `owners` array for display. If no match found, flag it. |
 | Status | `statusId` | Use `get_seeker_statuses` to get valid options — never hardcode. Ask the user which status to assign to imported records. |
 | Group | `groupId` | Use `get_seeker_groups` to see available groups. Ask the user if records should be assigned to one. |
@@ -67,7 +67,7 @@ If the user asks to create new custom fields, call `upsert_seeker_field_definiti
 For each row:
 1. Build the seeker payload using the approved mapping.
 2. Set `externalIds: { "<source_name>": "<unique_id_from_source>" }` — use email as the external ID if no better key exists. This enables safe re-imports.
-3. Call `upsert_seeker(seeker_data, org_id)`.
+3. Call `upsert_seeker(org_id, seeker_data)`.
 4. Handle the response:
    - `created` or `updated` → continue
    - `probable_duplicate` → show the candidates to the user, ask whether to `merge_id` or `confirmed_new`
@@ -77,7 +77,9 @@ After every 50 records, report a running count: created / updated / skipped.
 
 ## Key Rules
 
-- **Never create a custom field for**: `email`, `phone`, `linkedInUrl`, `education`, `address1/2`, `city`, `state`, `zip`, `notes`, `careerGoal`, `preferredRegions`
+- **Never create a custom field for**: `email`, `phone`, `linkedInUrl`, `education`, `address1`, `address2`, `city`, `state`, `zip`, `notes`, `careerGoal`, `preferredRegions`
+- **Never geocode yourself**: Pass raw address fields to `upsert_seeker` — the MCP handles geocoding, H3 indexing, and `preferredRegions` seeding server-side.
+- **Never pass `preferredRegions` directly**: Use `_region_names` for explicit region columns; otherwise let the MCP derive it from the address automatically.
 - **Owner resolution**: Always use `get_org_members` to turn a name string into a `userId`. If the name doesn't match any member, store it in a custom string field and flag it for manual follow-up.
 - **No batching**: One `upsert_seeker` call per record. Never batch writes.
 - **Mapping is a session contract**: Once approved, use it consistently for every row. Only pause again if a row contains a value in a column that was marked "skip" or a column that wasn't in the original mapping.
