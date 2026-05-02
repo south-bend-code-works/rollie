@@ -47,7 +47,7 @@ Produce a mapping table for the user to approve before writing anything:
 | Created Date | `sourceCreatedAt` | Preserves original creation date from source system |
 | Region to Work / Job Search Area / Preferred Region | `jobSearchArea` | Store the free-text value as-is in `jobSearchArea` — display only, no geocoding. If the org has defined Work Regions (call `get_work_regions`), also map matching values to `workRegionIds` (array of region IDs). If no region column exists, `preferredRegions` is seeded automatically from the geocoded home address — do nothing. Never pass `_region_names`. Never pass `preferredRegions` directly. |
 | Work regions (structured) | `workRegionIds` | Array of WorkRegion IDs from `get_work_regions`. Pass when you can confidently match the source value to a named region. If uncertain, store as `jobSearchArea` and let staff assign regions manually. |
-| Contact Owner / Assigned To | `ownerIds` | Resolve name → userId via `get_org_members`. Pass as array — `upsert_seeker` will auto-build the denormalized `owners` array for display. If no match found, flag it. |
+| Contact Owner / Assigned To | `ownerIds` | Resolve name → userId via `get_org_members`. Pass as array. If a name does not match any org member, **stop and ask the user** — do not skip, guess, or store the raw name in a custom field. The user may want to create a placeholder account, map to a different staff member, or leave ownership unassigned. |
 | Status | `statusId` | Use `get_seeker_statuses` to get valid options — never hardcode. Ask the user which status to assign to imported records. |
 | Group | `groupId` | Use `get_seeker_groups` to see available groups. Ask the user if records should be assigned to one. |
 | *Custom fields* | `sf_{orgId}_{slug}` | Only for fields with no standard equivalent |
@@ -84,7 +84,7 @@ After every 50 records, report a running count: created / updated / skipped.
 - **Never pass `preferredRegions` directly**: Use `workRegionIds` for named region subscriptions; otherwise the MCP seeds it automatically from the geocoded address.
 - **Never pass `_region_names`**: That field no longer exists. Use `jobSearchArea` for display text and `workRegionIds` for structured region subscriptions.
 - **Use `address`, not parts**: Concatenate all available address components into one `address` string. Do not split into `address1`, `city`, `state`, `zip` — pass the full string and let the geocoder resolve it.
-- **Owner resolution**: Always use `get_org_members` to turn a name string into a `userId`. If the name doesn't match any member, store it in a custom string field and flag it for manual follow-up.
+- **Owner resolution**: Always use `get_org_members` to turn a name string into a `userId`. If a name doesn't match any member, **pause and ask the user** — never create a custom field for it, never silently drop it. The user decides: create a placeholder account, remap to a different member, or import without an owner.
 - **No batching**: One `upsert_seeker` call per record. Never batch writes.
 - **Mapping is a session contract**: Once approved, use it consistently for every row. Only pause again if a row contains a value in a column that was marked "skip" or a column that wasn't in the original mapping.
 - **Re-imports are safe**: `externalIds` matching means running the same file twice updates rather than duplicates.
